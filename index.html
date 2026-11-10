@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handball Mármol - Propuesta</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0b0f19;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #f59e0b;
+            --text-light: #f8fafc;
+            --card-bg: rgba(30, 41, 59, 0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: radial-gradient(circle at top right, #1e3a8a, #0b0f19 60%);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated background circles */
+        .glow {
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            filter: blur(110px);
+            opacity: 0.35;
+            z-index: 0;
+            animation: float 8s ease-in-out infinite alternate;
+        }
+
+        .glow-1 {
+            background: var(--accent-primary);
+            top: -100px;
+            left: -100px;
+        }
+
+        .glow-2 {
+            background: var(--accent-secondary);
+            bottom: -120px;
+            right: -100px;
+            animation-delay: 3s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(40px, 30px) scale(1.1); }
+        }
+
+        .card {
+            position: relative;
+            z-index: 10;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 28px;
+            padding: 3.5rem 2.5rem;
+            max-width: 680px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+            animation: popIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(59, 130, 246, 0.18);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            color: #93c5fd;
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 1.8rem;
+        }
+
+        .ball-icon {
+            display: inline-block;
+            font-size: 1.2rem;
+            animation: bounce 1.6s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        h1 {
+            font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+            font-weight: 900;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #60a5fa 0%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            margin-top: 0.3rem;
+        }
+
+        p.subtitle {
+            color: #94a3b8;
+            font-size: 1.15rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 1.2rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            min-height: 64px;
+        }
+
+        .btn {
+            font-family: inherit;
+            font-size: 1.1rem;
+            font-weight: 800;
+            padding: 16px 34px;
+            border-radius: 16px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.5);
+        }
+
+        .btn-yes:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 15px 30px -5px rgba(59, 130, 246, 0.7);
+        }
+
+        .btn-no {
+            background: rgba(255, 255, 255, 0.08);
+            color: #cbd5e1;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+        }
+
+        .response-msg {
+            display: none;
+            margin-top: 2rem;
+            padding: 1.2rem;
+            border-radius: 16px;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #6ee7b7;
+            font-weight: 600;
+            font-size: 1.2rem;
+            animation: popIn 0.4s ease forwards;
+        }
+
+        canvas#confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 20;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <canvas id="confetti"></canvas>
+
+    <main class="card">
+        <div class="badge">
+            <span class="ball-icon">🤾‍♀️</span> Proyecto Handball Mármol
+        </div>
+
+        <h1>
+            HOLA PIOJOSA,
+            <span class="highlight">¿HACEMOS UNA PÁGINA PARA MÁRMOL?</span>
+        </h1>
+
+        <p class="subtitle">
+            Armemos la mejor web para el club: fixture, planteles, resultados y toda la mística de Mármol.
+        </p>
+
+        <div class="actions" id="btn-container">
+            <button class="btn btn-yes" id="yesBtn">¡Sí, de una! 🚀</button>
+            <button class="btn btn-no" id="noBtn">Mmm no sé...</button>
+        </div>
+
+        <div class="response-msg" id="responseMsg">
+            ¡Sabía que ibas a decir que sí! 💪🔥 Redirigiendo a WhatsApp...
+        </div>
+    </main>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const responseMsg = document.getElementById('responseMsg');
+        const btnContainer = document.getElementById('btn-container');
+
+        // Botón "No" esquivo
+        const moveButton = () => {
+            const x = (Math.random() - 0.5) * 260;
+            const y = (Math.random() - 0.5) * 160;
+            noBtn.style.transform = `translate(${x}px, ${y}px)`;
+        };
+
+        noBtn.addEventListener('mouseover', moveButton);
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            moveButton();
+        });
+
+        // Confetti simple y redirección a WhatsApp al decir que sí
+        yesBtn.addEventListener('click', () => {
+            btnContainer.style.display = 'none';
+            responseMsg.style.display = 'block';
+            launchConfetti();
+
+            const phone = '5491121921635';
+            const text = encodeURIComponent('DALE ROÑOSO HAGAMOS EL SISTEMA.');
+            const waUrl = `https://wa.me/${phone}?text=${text}`;
+
+            setTimeout(() => {
+                window.location.href = waUrl;
+            }, 900);
+        });
+
+        function launchConfetti() {
+            const canvas = document.getElementById('confetti');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const pieces = Array.from({ length: 120 }, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                size: Math.random() * 8 + 4,
+                speedY: Math.random() * 4 + 2,
+                speedX: (Math.random() - 0.5) * 3,
+                color: ['#3b82f6', '#fbbf24', '#60a5fa', '#ffffff', '#10b981'][Math.floor(Math.random() * 5)],
+                rotation: Math.random() * 360
+            }));
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                pieces.forEach(p => {
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate((p.rotation * Math.PI) / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    ctx.restore();
+
+                    p.y += p.speedY;
+                    p.x += p.speedX;
+                    p.rotation += 3;
+                });
+
+                if (pieces.some(p => p.y < canvas.height)) {
+                    requestAnimationFrame(draw);
+                }
+            }
+            draw();
+        }
+    </script>
+</body>
+</html>
